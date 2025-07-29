@@ -1,0 +1,132 @@
+# Vendor Management System
+
+A modern web application for managing vendors with Google authentication, built with Next.js, TypeScript, and Tailwind CSS.
+
+## Features
+
+- 🔐 **Google Authentication**: Secure login/logout with Google OAuth
+- 📝 **Vendor Creation**: Create vendors with comprehensive form validation
+- 📊 **Vendor Management**: View and manage all created vendors
+- 🎨 **Modern UI**: Beautiful, responsive design with Tailwind CSS
+- ✅ **Form Validation**: Client-side validation using Zod and React Hook Form
+
+## Vendor Form Fields
+
+### Required Fields (*)
+- **Vendor Name**: The name of the vendor
+- **Bank Account No.**: Vendor's bank account number
+- **Bank Name**: Name of the vendor's bank
+- **Address Line 2**: Second line of the vendor's address
+
+### Optional Fields
+- **Address Line 1**: First line of the vendor's address
+- **City**: Vendor's city
+- **Country**: Vendor's country
+- **Zip Code**: Vendor's postal/zip code
+
+## Setup Instructions
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Set up Google OAuth
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google+ API
+4. Go to "Credentials" and create an OAuth 2.0 Client ID
+5. Add `http://localhost:3000/api/auth/callback/google` to the authorized redirect URIs
+6. Copy your Client ID and Client Secret
+
+### 3. Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```env
+# Google OAuth Configuration
+GOOGLE_CLIENT_ID=your_google_client_id_here
+GOOGLE_CLIENT_SECRET=your_google_client_secret_here
+
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret_here
+```
+
+### 4. Generate NextAuth Secret
+
+Generate a secure secret for NextAuth:
+
+```bash
+openssl rand -base64 32
+```
+
+### 5. Run the Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Usage
+
+1. **Login**: Click "Login with Google" to authenticate
+2. **Create Vendor**: Fill out the vendor form with required and optional information
+3. **View Vendors**: See all created vendors in the table below the form
+4. **Logout**: Click the logout button to sign out
+
+## Technology Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Authentication**: NextAuth.js with Google Provider
+- **Form Handling**: React Hook Form with Zod validation
+- **UI Components**: Custom components with modern design
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/auth/[...nextauth]/route.ts  # NextAuth API route
+│   ├── layout.tsx                       # Root layout with providers
+│   ├── page.tsx                         # Main dashboard page
+│   └── providers.tsx                    # Session provider wrapper
+├── components/
+│   ├── auth/
+│   │   └── LoginButton.tsx              # Authentication component
+│   └── vendor/
+│       ├── VendorForm.tsx               # Vendor creation form
+│       └── VendorList.tsx               # Vendor display table
+└── types/
+    └── vendor.ts                        # TypeScript types and validation
+```
+
+## Development
+
+- **TypeScript**: Full type safety throughout the application
+- **ESLint**: Code linting and formatting
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Error Handling**: Comprehensive error handling and user feedback
+
+## Deployment
+
+This application can be deployed to Vercel, Netlify, or any other Next.js-compatible hosting platform. Make sure to:
+
+1. Set up environment variables in your hosting platform
+2. Configure Google OAuth redirect URIs for your production domain
+3. Update `NEXTAUTH_URL` to your production URL
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+MIT License - feel free to use this project for your own purposes.
