@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginButton from "@/components/auth/LoginButton";
 import VendorForm from "@/components/vendor/VendorForm";
 import VendorList from "@/components/vendor/VendorList";
@@ -11,22 +11,55 @@ export default function Home() {
   const { data: session, status } = useSession();
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingVendors, setIsLoadingVendors] = useState(false);
+
+  // Fetch vendors when user is authenticated
+  useEffect(() => {
+    if (session?.user) {
+      fetchVendors();
+    }
+  }, [session]);
+
+  const fetchVendors = async () => {
+    setIsLoadingVendors(true);
+    try {
+      const response = await fetch('/api/vendors');
+      if (response.ok) {
+        const data = await response.json();
+        setVendors(data.vendors || []);
+      }
+    } catch (error) {
+      console.error('Error fetching vendors:', error);
+    } finally {
+      setIsLoadingVendors(false);
+    }
+  };
 
   const handleCreateVendor = async (vendorData: VendorFormData) => {
     setIsLoading(true);
     
-    // Simulate API call - in a real app, this would be a POST request to your backend
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const newVendor: Vendor = {
-      id: Date.now().toString(),
-      ...vendorData,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    
-    setVendors(prev => [newVendor, ...prev]);
-    setIsLoading(false);
+    try {
+      const response = await fetch('/api/vendors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(vendorData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setVendors(prev => [data.vendor, ...prev]);
+      } else {
+        const errorData = await response.json();
+        alert(`Error creating vendor: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Error submitting vendor:", error);
+      alert('Error creating vendor. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (status === "loading") {
@@ -89,7 +122,14 @@ export default function Home() {
 
           {/* Vendor List */}
           <section>
-            <VendorList vendors={vendors} />
+            {isLoadingVendors ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="mt-2 text-gray-600">Loading vendors...</p>
+              </div>
+            ) : (
+              <VendorList vendors={vendors} />
+            )}
           </section>
         </div>
       </main>

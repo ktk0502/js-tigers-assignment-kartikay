@@ -13,8 +13,16 @@ export const vendorSchema = z.object({
 
 export type VendorFormData = z.infer<typeof vendorSchema>;
 
-export interface Vendor extends VendorFormData {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
+export interface Vendor {
+  id: number;
+  vendorName: string;
+  bankAccountNo: string;
+  bankName: string;
+  addressLine1?: string | null;
+  addressLine2: string;
+  city?: string | null;
+  country?: string | null;
+  zipCode?: string | null;
+  createdAt: string;
+  updatedAt: string;
 } 
