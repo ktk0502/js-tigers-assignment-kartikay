@@ -2,13 +2,14 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import LoginButton from "@/components/auth/LoginButton";
 import VendorForm from "@/components/vendor/VendorForm";
-import VendorList from "@/components/vendor/VendorList";
 import { VendorFormData, Vendor } from "@/types/vendor";
 
 export default function Home() {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingVendors, setIsLoadingVendors] = useState(false);
@@ -107,7 +108,15 @@ export default function Home() {
                 Welcome back, {session.user?.name || session.user?.email}
               </p>
             </div>
-            <LoginButton />
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => router.push('/vendors')}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                View All Vendors
+              </button>
+              <LoginButton />
+            </div>
           </div>
         </div>
       </header>
@@ -120,17 +129,6 @@ export default function Home() {
             <VendorForm onSubmit={handleCreateVendor} isLoading={isLoading} />
           </section>
 
-          {/* Vendor List */}
-          <section>
-            {isLoadingVendors ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                <p className="mt-2 text-gray-600">Loading vendors...</p>
-              </div>
-            ) : (
-              <VendorList vendors={vendors} />
-            )}
-          </section>
         </div>
       </main>
     </div>

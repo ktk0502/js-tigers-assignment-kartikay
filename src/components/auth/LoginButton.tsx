@@ -17,14 +17,15 @@ export default function LoginButton() {
     return (
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          {session.user?.image && (
-            <img
-              src={session.user.image}
-              alt="Profile"
-              className="w-8 h-8 rounded-full"
-            />
-          )}
-          <span className="text-sm font-medium">
+          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+            <span className="text-white text-xs font-medium">
+              {session.user?.name ? 
+                session.user.name.split(' ').map(word => word.charAt(0)).join('').toUpperCase() :
+                session.user?.email?.charAt(0) || 'U'
+              }
+            </span>
+          </div>
+          <span className="text-sm font-medium text-black">
             {session.user?.name || session.user?.email}
           </span>
         </div>
