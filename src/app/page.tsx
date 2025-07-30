@@ -1,32 +1,66 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import LoginButton from "@/components/auth/LoginButton";
 import VendorForm from "@/components/vendor/VendorForm";
-import VendorList from "@/components/vendor/VendorList";
 import { VendorFormData, Vendor } from "@/types/vendor";
 
 export default function Home() {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingVendors, setIsLoadingVendors] = useState(false);
+
+  // Fetch vendors when user is authenticated
+  useEffect(() => {
+    if (session?.user) {
+      fetchVendors();
+    }
+  }, [session]);
+
+  const fetchVendors = async () => {
+    setIsLoadingVendors(true);
+    try {
+      const response = await fetch('/api/vendors');
+      if (response.ok) {
+        const data = await response.json();
+        setVendors(data.vendors || []);
+      }
+    } catch (error) {
+      console.error('Error fetching vendors:', error);
+    } finally {
+      setIsLoadingVendors(false);
+    }
+  };
 
   const handleCreateVendor = async (vendorData: VendorFormData) => {
     setIsLoading(true);
     
-    // Simulate API call - in a real app, this would be a POST request to your backend
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const newVendor: Vendor = {
-      id: Date.now().toString(),
-      ...vendorData,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    
-    setVendors(prev => [newVendor, ...prev]);
-    setIsLoading(false);
+    try {
+      const response = await fetch('/api/vendors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(vendorData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setVendors(prev => [data.vendor, ...prev]);
+      } else {
+        const errorData = await response.json();
+        alert(`Error creating vendor: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Error submitting vendor:", error);
+      alert('Error creating vendor. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (status === "loading") {
@@ -74,7 +108,15 @@ export default function Home() {
                 Welcome back, {session.user?.name || session.user?.email}
               </p>
             </div>
-            <LoginButton />
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => router.push('/vendors')}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                View All Vendors
+              </button>
+              <LoginButton />
+            </div>
           </div>
         </div>
       </header>
@@ -87,10 +129,6 @@ export default function Home() {
             <VendorForm onSubmit={handleCreateVendor} isLoading={isLoading} />
           </section>
 
-          {/* Vendor List */}
-          <section>
-            <VendorList vendors={vendors} />
-          </section>
         </div>
       </main>
     </div>

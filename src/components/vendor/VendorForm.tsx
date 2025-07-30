@@ -49,7 +49,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("vendorName")}
               type="text"
               id="vendorName"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${
                 errors.vendorName ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Enter vendor name"
@@ -68,7 +68,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("bankAccountNo")}
               type="text"
               id="bankAccountNo"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${
                 errors.bankAccountNo ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Enter bank account number"
@@ -87,7 +87,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("bankName")}
               type="text"
               id="bankName"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${
                 errors.bankName ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Enter bank name"
@@ -106,7 +106,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("addressLine1")}
               type="text"
               id="addressLine1"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="Enter address line 1"
             />
           </div>
@@ -120,7 +120,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("addressLine2")}
               type="text"
               id="addressLine2"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 ${
                 errors.addressLine2 ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Enter address line 2"
@@ -139,7 +139,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("city")}
               type="text"
               id="city"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="Enter city"
             />
           </div>
@@ -153,7 +153,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("country")}
               type="text"
               id="country"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="Enter country"
             />
           </div>
@@ -167,7 +167,7 @@ export default function VendorForm({ onSubmit, isLoading = false }: VendorFormPr
               {...register("zipCode")}
               type="text"
               id="zipCode"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               placeholder="Enter zip code"
             />
           </div>

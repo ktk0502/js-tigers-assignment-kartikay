@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup-db": "node scripts/setup-db.js"
   },
   "dependencies": {
     "react": "19.1.0",
@@ -15,7 +16,9 @@
     "next-auth": "^4.24.5",
     "zod": "^3.22.4",
     "react-hook-form": "^7.48.2",
-    "@hookform/resolvers": "^3.3.2"
+    "@hookform/resolvers": "^3.3.2",
+    "pg": "^8.11.3",
+    "@types/pg": "^8.10.9"
   },
   "devDependencies": {
     "typescript": "^5",
