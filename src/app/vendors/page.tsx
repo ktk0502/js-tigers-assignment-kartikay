@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import LoginButton from "@/components/auth/LoginButton";
 import EditVendorModal from "@/components/vendor/EditVendorModal";
+import DeleteVendorModal from "@/components/vendor/DeleteVendorModal";
 import { Vendor } from "@/types/vendor";
 
 export default function VendorsPage() {
@@ -16,6 +17,8 @@ export default function VendorsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedVendorId, setSelectedVendorId] = useState<number | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedVendorName, setSelectedVendorName] = useState<string>("");
   const itemsPerPage = 10;
 
   // Fetch vendors when user is authenticated
@@ -41,28 +44,20 @@ export default function VendorsPage() {
     }
   };
 
-  const handleDelete = async (vendorId: number, vendorName: string) => {
-    if (!confirm(`Are you sure you want to delete vendor "${vendorName}"? This action cannot be undone.`)) {
-      return;
-    }
+  const handleDelete = (vendorId: number, vendorName: string) => {
+    setSelectedVendorId(vendorId);
+    setSelectedVendorName(vendorName);
+    setIsDeleteModalOpen(true);
+  };
 
-    try {
-      const response = await fetch(`/api/vendors/${vendorId}`, {
-        method: 'DELETE',
-      });
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedVendorId(null);
+    setSelectedVendorName("");
+  };
 
-      if (response.ok) {
-        // Refresh the vendor list
-        fetchVendors();
-        alert('Vendor deleted successfully!');
-      } else {
-        const errorData = await response.json();
-        alert(`Error deleting vendor: ${errorData.error}`);
-      }
-    } catch (error) {
-      console.error('Error deleting vendor:', error);
-      alert('Error deleting vendor. Please try again.');
-    }
+  const handleVendorDeleted = () => {
+    fetchVendors();
   };
 
   const handleEdit = (vendorId: number) => {
@@ -259,6 +254,15 @@ export default function VendorsPage() {
         onClose={handleCloseEditModal}
         vendorId={selectedVendorId}
         onVendorUpdated={handleVendorUpdated}
+      />
+
+      {/* Delete Vendor Modal */}
+      <DeleteVendorModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        vendorId={selectedVendorId}
+        vendorName={selectedVendorName}
+        onVendorDeleted={handleVendorDeleted}
       />
     </div>
   );
